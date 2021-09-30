@@ -72,18 +72,18 @@ def tobs():
     return jsonify(tobs)
 
 @app.route("/api/v1.0/<start>/<end>")
-def startdate(start,end):
+def startdate(start=None,end=None):
     """Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range."""
-    rain=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.date>=start).filter(measure.date<=end).all()
-
-    return jsonify (rain)
+    rain2=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.date>=start).filter(measure.date<=end).all()
+    #rain2=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.date<=end).filter(measure.date>=start).all()
+    return jsonify (rain2)
 
 @app.route("/api/v1.0/<start>")
-def juststart(start,end):
+def juststart(start):
     """Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range."""
-    rain=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.date>=start).all()
+    rain1=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.date>=start).all()
 
-    return jsonify (rain)
+    return jsonify (rain1)
 
 if __name__ == '__main__':
     app.run(debug=True)
