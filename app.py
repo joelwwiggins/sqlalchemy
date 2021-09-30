@@ -67,7 +67,8 @@ def stations():
 @app.route("/api/v1.0/tobs")
 def tobs():
     """Most Active Stations"""   
-    tobs=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.station=='USC00519281').all()
+    tobs=session.query(measure.station, func.count(measure.station)).group_by(measure.station).\
+    order_by(func.count(measure.station).desc()).all()
     return jsonify(tobs)
 
 @app.route("/api/v1.0/<start>/<end>")
