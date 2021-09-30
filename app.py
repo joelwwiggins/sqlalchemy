@@ -47,7 +47,6 @@ def home():
 @app.route("/api/v1.0/precipitation")
 def precipitation():
     rain=session.query(measure.date, measure.prcp).\
-    filter(measure.date>=test).\
     order_by(measure.date).\
     all()
 
@@ -78,7 +77,12 @@ def startdate(start,end):
 
     return jsonify (rain)
 
+@app.route("/api/v1.0/<start>")
+def juststart(start,end):
+    """Return a JSON list of the minimum temperature, the average temperature, and the max temperature for a given start or start-end range."""
+    rain=session.query(func.min(measure.tobs), func.max(measure.tobs),func.avg(measure.tobs)).filter(measure.date>=start).all()
 
+    return jsonify (rain)
 
 if __name__ == '__main__':
     app.run(debug=True)
